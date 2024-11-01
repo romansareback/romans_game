@@ -19,6 +19,7 @@
 
 ;タイトル画面へ移動
 @jump storage="title.ks"
+;テスト用変更
 
 [s]
 
