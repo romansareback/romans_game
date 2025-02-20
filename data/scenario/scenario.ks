@@ -5,6 +5,8 @@
 @bg storage="ゲームUI-01-01.png" 
 
 [iscript]
+
+
 window.startCountdown = function() {
     if (window.countdownStarted) return; // すでに開始済みなら再実行しない
     

@@ -18,7 +18,7 @@
 [hidemenubutton]
 
 ;タイトル画面へ移動
-@jump storage="scenario.ks"
+@jump storage="secound.ks"
 
 [s]
 
