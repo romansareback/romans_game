@@ -11,7 +11,7 @@ window.startCountdown = function() {
     if (window.countdownStarted) return; // すでに開始済みなら再実行しない
     
     window.countdownStarted = true; // カウントダウン開始フラグ
-    window.remainingTime = window.remainingTime || 2; // 既に設定されていればそのまま、なければ30秒
+    window.remainingTime = window.remainingTime || 150; // 既に設定されていればそのまま、なければ30秒
 
     // カウントダウンのHTML要素を再描画
     $("#countdown").remove();
