@@ -293,6 +293,7 @@ checktraining();
    
 
 [endscript]
+[playbgm storage="up.ogg" loop="false"  ]
 [wait time="3000" ]
 [jump target="restart"]
 
@@ -320,6 +321,7 @@ checkcharismaFailure();
 
 
 [endscript]
+[playbgm storage="beliave.ogg" loop="false"  ]
 [wait time="3000"]
 [jump target="restart"]
 
@@ -343,27 +345,35 @@ checkmiracleFailure();
     
 
 [endscript]
+[playbgm storage="training.ogg" loop="false"  ]
 [wait time="3000"]
 [jump target="restart"]
 
 *training_fail
+[playbgm storage="down.ogg" loop="false"  ]
 [position layer="message0" left=0 top=400 width=1000 height=200 page=fore visible=true]
-「胡散臭いと言われた。」[p]
+「胡散臭いと言われた。」
+[wait time="2000" ]
 [jump target="restart2"]
 
 *fight_fail
+[playbgm storage="down.ogg" loop="false"  ]
 [position layer="message0" left=0 top=400 width=1000 height=200 page=fore visible=true]
-「筋を痛めた。」[p]
+「筋を痛めた。」
+[wait time="2000" ]
 [jump target="restart2"]
 
 *miracle_fail
+[playbgm storage="down.ogg" loop="false"  ]
 [position layer="message0" left=0 top=400 width=1000 height=200 page=fore visible=true]
-「神に見放された。」[p]
+「神に見放された。」
+[wait time="2000" ]
 [jump target="restart2"]
 
 *all_fail
 [position layer="message0" left=0 top=400 width=1000 height=200 page=fore visible=true]
-「石を投げつけられた。」[p]
+「石を投げつけられた。」
+[wait time="2000" ]
 [jump target="restart2"]
 
 
