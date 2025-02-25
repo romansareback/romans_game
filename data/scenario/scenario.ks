@@ -4,14 +4,14 @@
 [position layer="message0" left=160 top=500 width=1000 height=200 page=fore visible=false]
 @bg storage="ゲームUI-01-01.png" 
 
-[iscript]
 
+[iscript]
 
 window.startCountdown = function() {
     if (window.countdownStarted) return; // すでに開始済みなら再実行しない
     
     window.countdownStarted = true; // カウントダウン開始フラグ
-    window.remainingTime = window.remainingTime || 150; // 既に設定されていればそのまま、なければ30秒
+    window.remainingTime = window.remainingTime || 2; // 既に設定されていればそのまま、なければ30秒
 
     // カウントダウンのHTML要素を再描画
     $("#countdown").remove();
@@ -49,7 +49,7 @@ window.fight_current_hp = 0;
 window.fight_previous_hp = 0;
 
 window.checkTrainingFailure = function () {
-    if (charisma_current_hp - fight_current_hp >= 30) {
+    if (charisma_current_hp - fight_current_hp >= 30 & charisma_current_hp < 80) {
         miracle_previous_hp = miracle_current_hp;
         miracle_current_hp = 0;        
         fight_previous_hp = fight_current_hp;
@@ -60,7 +60,20 @@ window.checkTrainingFailure = function () {
         createHpBar('fight', fight_previous_hp, fight_current_hp, fight_max_hp);
         createHpBar('charisma', charisma_previous_hp, charisma_current_hp, charisma_max_hp);
         tyrano.plugin.kag.ftag.startTag("jump", {"target": "training_fail"});
-    } else {
+    }     
+    else if (fight_current_hp == 80 & charisma_current_hp - fight_current_hp >= 10) {
+        miracle_previous_hp = miracle_current_hp;
+        miracle_current_hp = 0;        
+        fight_previous_hp = fight_current_hp;
+        fight_current_hp = 0;
+        charisma_previous_hp = charisma_current_hp;
+        charisma_current_hp = 0;
+        createHpBar('miracle', miracle_previous_hp, miracle_current_hp, miracle_max_hp);
+        createHpBar('fight', fight_previous_hp, fight_current_hp, fight_max_hp);
+        createHpBar('charisma', charisma_previous_hp, charisma_current_hp, charisma_max_hp);
+        tyrano.plugin.kag.ftag.startTag("jump", {"target": "all_fail"});
+    }
+    else {
     $(".layer_free").append('<div id="temp_gif" style="position:absolute; z-index:9999; left: 30%;"><img src="data/fgimage/chara/照れロー.gif" style="width: 58%; top: 40%;" alt="Temporary GIF"/></div>');
     setTimeout(function(){
         $("#temp_gif").remove();
@@ -189,7 +202,7 @@ window.initCreateHpBar = function () {
 
 
 window.createHpBar = function (name,previous_hp,current_hp, max_hp) {
-    
+
      $(`.${name}_hp_container, .${name}_hp_text`).remove();
      var charisma_gage_percentage = (charisma_current_hp / charisma_max_hp) * 100;
      var miracle_gage_percentage = (miracle_current_hp / miracle_max_hp) * 100;
@@ -229,7 +242,6 @@ window.createHpBar = function (name,previous_hp,current_hp, max_hp) {
 
     // HPバーの初期状態を設定
     updateHpBar(name,previous_hp,current_hp,max_hp,charisma_gage_percentage,miracle_gage_percentage,fight_gage_percentage);
-
 }
 
 
@@ -286,11 +298,7 @@ $(".message_inner p").remove();
     updateHpBar('charisma', charisma_previous_hp, charisma_current_hp, charisma_max_hp);
 }
 checkTrainingFailure();
-checktraining();
 
-
- 
-   
 
 [endscript]
 [playbgm storage="up.ogg" loop="false"  ]
@@ -327,11 +335,10 @@ checkcharismaFailure();
 
 *fight
 [iscript]
-
     fight_previous_hp = fight_current_hp
     fight_current_hp += 10;
     if (fight_current_hp > 100) {
-       fight_current_hp == 100;
+       fight_current_hp = 100;
     }
 if ($('.fight_gage_bar').length === 0) {
     // ゲージがなければ新規作成
@@ -343,11 +350,10 @@ if ($('.fight_gage_bar').length === 0) {
 
 checkmiracleFailure();
     
-
 [endscript]
 [playbgm storage="training.ogg" loop="false"  ]
 [wait time="3000"]
-[jump target="restart"]
+[jump target="restart2"]
 
 *training_fail
 [playbgm storage="down.ogg" loop="false"  ]
@@ -371,6 +377,7 @@ checkmiracleFailure();
 [jump target="restart2"]
 
 *all_fail
+[playbgm storage="all-down.ogg" loop="false"  ]
 [position layer="message0" left=0 top=400 width=1000 height=200 page=fore visible=true]
 「石を投げつけられた。」
 [wait time="2000" ]
@@ -379,30 +386,20 @@ checkmiracleFailure();
 
 
 
-*deploy
-[iscript]
-    // 各HPの比較
-    if (charisma_current_hp == charisma_max_hp && miracle_current_hp == miracle_max_hp && fight_current_hp == fight_max_hp) {
-        tyrano.plugin.kag.ftag.startTag("jump", {"target": "win"});
-    } else {
-        tyrano.plugin.kag.ftag.startTag("jump", {"target": "lose"});
-    }
-[endscript]
-
 *win
 [cm]
-@bg storage="win.jpg"
+@bg storage="super-shiroman.jpg"
 [position layer="message0" left=160 top=500 width=1000 height=200 page=fore visible=true]
 「シローマンは軍を率い、無事幕府の軍を一致団結し、追い払った！」[p]
-@jump target="start"
+[jump target="start"]
 
 
 *lose
 [cm]
-@bg storage="lose.jpg"
+@bg storage="lose-shiroman.jpg"
 [position layer="message0" left=160 top=500 width=1000 height=200 page=fore visible=true]
 「力及ばず、シローマン敗北」[p]
-
+[jump target="gameover" ]
 
 
 *gameover
@@ -413,6 +410,18 @@ checkmiracleFailure();
 [position layer="message0" left=160 top=500 width=1000 height=200 page=fore visible=true]
 
 「シローマン永眠」[p]
+[jump target="start"]
 
+*deploy
+[cm]
+@bg storage="シローマン.jpg" 
+[position layer="message0" left=160 top=500 width=1000 height=200 page=fore visible=true]
+「いざ出陣！！」[p]
 
-
+[iscript]
+    var target = (charisma_current_hp == charisma_max_hp &&
+                  miracle_current_hp == miracle_max_hp &&
+                  fight_current_hp == fight_max_hp)
+                 ? "win" : "lose";
+    tyrano.plugin.kag.ftag.startTag("jump", {"target": target});
+[endscript]
