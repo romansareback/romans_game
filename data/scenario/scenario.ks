@@ -396,7 +396,7 @@ checkmiracleFailure();
 
 *lose
 [cm]
-@bg storage="lose-shiroman.jpg"
+@bg storage="alllose.gif"
 [position layer="message0" left=160 top=500 width=1000 height=200 page=fore visible=true]
 「力及ばず、シローマン敗北」[p]
 [jump target="gameover" ]
