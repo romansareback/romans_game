@@ -4,7 +4,6 @@
 [position layer="message0" left=160 top=500 width=1000 height=200 page=fore visible=false]
 @bg storage="ゲームUI-01-01.png" 
 
-
 [iscript]
 
 window.startCountdown = function() {
@@ -13,7 +12,6 @@ window.startCountdown = function() {
     window.countdownStarted = true; // カウントダウン開始フラグ
     window.remainingTime = window.remainingTime || 150; // 既に設定されていればそのまま、なければ30秒
 
-    // カウントダウンのHTML要素を再描画
     $("#countdown").remove();
 $(".layer_free").append(`
     <div id="countdown" style="position:absolute; top:30px; left:30px; color:white; font-size:40px;">
@@ -21,17 +19,25 @@ $(".layer_free").append(`
     </div>
 `);
 
-    // 一定間隔ごとに残り時間を減らす
-    window.countdownTimer = setInterval(function() {
-        window.remainingTime--;
-        $("#cd_value").text(window.remainingTime);
+    
+window.countdownTimer = setInterval(function() {
+    window.remainingTime--;
+    $("#cd_value").text(window.remainingTime);
 
-        if (window.remainingTime <= 0) {
-            clearInterval(window.countdownTimer);
-            window.countdownStarted = false;
-            tyrano.plugin.kag.ftag.startTag("jump", {"target":"deploy"});
+    // 残り時間が60秒以下になったらメイン画像を変更（1回だけ実行）
+    if (window.remainingTime <= 60) {
+        if (!window.mainChanged) {
+            window.mainChanged = true;  // 変更済みフラグ
+            $("#main img").attr("src", "data/fgimage/chara/メイン2.gif");
         }
-    }, 1000);
+    }
+
+    if (window.remainingTime <= 0) {
+        clearInterval(window.countdownTimer);
+        window.countdownStarted = false;
+        tyrano.plugin.kag.ftag.startTag("jump", {"target": "deploy"});
+    }
+}, 1000);
 };
 [endscript]
 
